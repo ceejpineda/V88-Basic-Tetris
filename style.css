@@ -1,0 +1,29 @@
+*, *::before. *::after{
+    padding: 0;
+    margin: 0;
+}
+body{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #121212;
+}
+.gameGrid{
+    display: flex;
+    flex-wrap: wrap;
+    height: 720px;
+    width: 400px;
+    border: 3px solid white;
+}
+.gridElement{
+    outline: 1px solid rgba(255, 255, 255, 0.459);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(127, 255, 212, 0.264);
+}
+.piece{
+    background-color: aquamarine;
+}
