@@ -1,6 +1,9 @@
 const tetris = (()=>{
 
-    const gameGrid = document.querySelector('.gameGrid')
+    const gameGrid = document.querySelector('.gameGrid');
+    let currentPos = 2;
+    let currentRotation = 0;    
+    
     
     const spawnGrid = ()=>{
         for(let i=0; i<180; i++){
@@ -19,10 +22,10 @@ const tetris = (()=>{
             [10,20,21,22],
         ]
         const lTetris = [
-            [1,11,21,2],
-            [10,11,12,22],
+            [1,12,22,2],
+            [10,11,12,2],
             [0,10,20,21],
-            [10,20,21,22],
+            [12,20,21,22],
         ]
         const tTetris = [
             [1,2,3,12],
@@ -55,16 +58,16 @@ const tetris = (()=>{
             [10,11,12,13],
         ]
 
-        const allPiece = [lTetris, zTetris, sTetris, iTetris, oTetris];
+        const allPiece = [lTetris, jTetris, sTetris, zTetris, sTetris, iTetris, oTetris];
         
-        return lTetris[2];
-        //return allPiece[Math.floor(Math.random()*5)][Math.floor(Math.random()*4)]
+        return allPiece[Math.floor(Math.random()*7)];
     }
-
+    
+    let newPiece = spawnPiece();
+    let current = newPiece[currentRotation];
+    
     const display = () =>{
         const gridElements = document.querySelectorAll('.gridElement');
-        let current = spawnPiece();
-        let currentPos = 2;
         current.forEach(index =>{
             gridElements[currentPos + index].classList.add('piece');
         })
@@ -78,10 +81,42 @@ const tetris = (()=>{
             }
         });
     }
+
+    const moveDown = () =>{
+        removePiece();
+        currentPos += 10;
+        display();
+    }
+
+    const controls = () =>{
+        document.addEventListener('keydown', (e)=>{
+            if(e.key == "ArrowRight"){
+                removePiece();
+                currentPos += 1;
+                display();
+            }if(e.key == "ArrowLeft"){
+                removePiece();
+                currentPos -= 1;
+                display();
+            }if(e.key == "ArrowDown"){
+                moveDown();
+            }if(e.key == "ArrowUp"){
+                currentRotation++;
+                if(currentRotation == 4){
+                    currentRotation = 0;
+                }
+                current = newPiece[currentRotation];
+                removePiece();
+                display();
+            }
+        });
+    }
     
-    return {spawnGrid, display, removePiece}
+    return {spawnGrid, display, removePiece, controls, moveDown}
 
 })();
 
 tetris.spawnGrid();
 tetris.display();
+tetris.controls();
+setInterval(tetris.moveDown, 1000)
