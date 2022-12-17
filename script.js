@@ -3,10 +3,18 @@ const tetris = (()=>{
     const gameGrid = document.querySelector('.gameGrid');
     const nextPieceGrid = document.querySelector('.nextPieceGrid');
 
+    const startButton = document.getElementById('start')
+    let isStart = false;
+
     let currentPos = 2;
     let currentRotation = 0;
     let randomizer = 0;
     let score = 0;
+
+    const clearSound = new Audio();
+    clearSound.src = './sound.wav';
+    clearSound.preload ='auto';
+    const theme = document.getElementById('theme')
     
     
     const spawnGrid = ()=>{
@@ -121,6 +129,7 @@ const tetris = (()=>{
     }
 
     const moveDown = () =>{
+        if(!isStart) return;
         const gridElements = document.querySelectorAll('.gridElement');
         if(!current.some(index => gridElements[currentPos+index+10].classList.contains('floor'))){
             removePiece();
@@ -133,9 +142,14 @@ const tetris = (()=>{
     }
 
     const moveRight = () =>{
-        if(current.some(index =>(currentPos + index)%10 == 9)) return;
+        const gridElements = document.querySelectorAll('.gridElement');
         removePiece();
-        currentPos += 1;
+        if(!current.some(index =>(currentPos + index)%10 == 9)){
+            currentPos += 1;
+            if(current.some(index => gridElements[currentPos+index].classList.contains('floor'))){
+                currentPos -= 1;
+            }
+        };
         display();
     }
 
@@ -147,7 +161,7 @@ const tetris = (()=>{
             if(current.some(index => gridElements[currentPos+index].classList.contains('floor'))){
                 currentPos += 1;
             }
-        }
+        };
         display();
     }
 
@@ -162,7 +176,12 @@ const tetris = (()=>{
     }
 
     const controls = () =>{
-        let rightEdge = false;
+
+        startButton.addEventListener('click', ()=>{
+            theme.play();
+            isStart = true;
+        })
+        
         document.addEventListener('keydown', (e)=>{
             if(e.key == "ArrowRight"){
                 moveRight();
@@ -193,14 +212,13 @@ const tetris = (()=>{
 
     const scoreMechanic = () =>{
         let gridElements = Array.from(document.querySelectorAll('.gridElement'));
-        console.log(gridElements)
 
         for(let i = 0; i<180; i+=10){
             const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9]
             console.log(row.every(j => gridElements[j].classList.contains('floor')))
             if(row.every(j => gridElements[j].classList.contains('floor'))){
+                clearSound.play();
                 score += 10;
-                console.log(score);
                 row.forEach(index =>{
                     gridElements[index].classList.remove('floor');
                     gridElements[index].classList.remove('piece');
@@ -223,4 +241,4 @@ const tetris = (()=>{
 tetris.spawnGrid();
 tetris.display();
 tetris.controls();
-tetris.moveDown();
+setInterval(tetris.moveDown, 500);
