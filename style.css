@@ -11,6 +11,10 @@ body{
     justify-content: center;
     background-color: #121212;
 }
+.body{
+    display: flex;
+    gap: 40px;
+}
 .gameGrid{
     display: flex;
     flex-wrap: wrap;
@@ -19,11 +23,35 @@ body{
     border: 3px solid white;
 }
 .gridElement{
-    outline: 1px solid rgba(255, 255, 255, 0.459);
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.215);
     width: 40px;
     height: 40px;
     background-color: rgba(127, 255, 212, 0.264);
 }
 .piece{
-    background-color: aquamarine;
+    background-color: blue;
+    background-image: url('./Tetrisblock.png');
+    background-size: contain;
+}
+.floor{
+}
+.bottom{
+    box-sizing: border-box;
+    border: none;
+    border-top: 3px solid white;
+    background-color: #121212;
+}
+.nextPieceGrid{
+    display: flex;
+    height: 160px;
+    width: 160px;
+    flex-wrap: wrap;
+    background-color: rgba(0, 255, 170, 0.223);
+    outline: 1px solid black;
+}
+.nextPieceGrid > div{
+    height: 40px;
+    width: 40px;
+    outline: 1px solid black;
 }
